@@ -52,7 +52,7 @@ if img_format == 'tiff':
     
 for i in range(n):
     ii = str(i)
-    filename = '%simage%s%s0.%s'%(base_url, '0'*(5-len(ii)),ii,img_format)
+    filename = '%simage%s%s0.%s'%(base_url, '0'*(4-len(ii)),ii,img_format)
     print('Adding image: %s'%filename)
     ext_files.append(filename)
     
