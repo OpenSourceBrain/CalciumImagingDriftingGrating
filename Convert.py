@@ -10,35 +10,49 @@ dataset = 'neurofinder.01.01'
 
 start_time = datetime(2019, 1, 1, 11, tzinfo=tzlocal())
 
+from datetime import datetime
+now = datetime.now() # current date and time
+date_time = now.strftime("%d %B %Y, %H:%M:%S")
+gen_info = 'NWB file generated on %s with pynwb v%s and Python %s' %(date_time, pynwb.__version__,platform.python_version())
+print(gen_info )
 
-notes = 'Created with pynwb v%s and Python %s' %(pynwb.__version__,platform.python_version())
+# FIXME: this attr breaks nwb-explorer
+# date_of_birth=create_date 
+sub = pynwb.file.Subject(
+    description='Mouse',
+    species='Mus musculus',
+)
 
-nwbfile = pynwb.NWBFile('Calcium imaging data', 'EXAMPLE_ID', datetime.now(tzlocal()),
-                  experimenter='Packer',
-                  lab='Silver Lab',
-                  institution='UCL',
-                  experiment_description=('Images... %s'%notes),
-                  session_id='nC')
+
+nwbfile = pynwb.NWBFile('Calcium imaging data from Hausser lab', dataset, datetime.now(tzlocal()),
+                  experimenter='Adam Packer, Lloyd Russell',
+                  lab='Hausser Lab',
+                  institution='University College London',
+                  protocol='Awake head-fixed',
+                  stimulus_notes='Drifting grating visual stimuli',
+                  related_publications='https://www.ncbi.nlm.nih.gov/pubmed/25532138',
+                  experiment_description=("Calcium imaging data from mouse V1 recording response in cells with GCaMP6s to drifting grating stimuli.\n"+\
+"This data was originally obtained from https://github.com/codeneuro/neurofinder, and has been redistributed here with permission of Michael Hausser."),
+                  session_id='20140727_L46_001',
+                  subject=sub)
                   
-'''
-device = Device('PovRay')
-nwbfile.add_device(device)
-optical_channel = OpticalChannel('my_optchan', 'description', 500.)
-imaging_plane = nwbfile.create_imaging_plane('my_imgpln', optical_channel, 'cerebellum',
-                                             device, 600., 300., 'neuroConstruct', 'cerebellum',
-                                             np.ones((5, 5, 3)), 4.0, 'manifold unit', 'A frame to refer to')'''
                                              
 ext_files = []
 
-n = 2
-
-base_url = "https://raw.githubusercontent.com/OpenSourceBrain/CalciumImagingDriftingGrating/master/%s/png/"%dataset
+n = 183
 
 img_format = 'png'
+img_format = 'tiff'
+img_format = 'jpg'
+
+base_url = "https://raw.githubusercontent.com/OpenSourceBrain/CalciumImagingDriftingGrating/master/%s/%s/"%(dataset,img_format)
+
+if img_format == 'tiff':
+    base_url = "https://raw.githubusercontent.com/OpenSourceBrain/CalciumImagingDriftingGrating/master/%s/images/"%dataset
     
 for i in range(n):
     ii = str(i)
-    filename = '%simage%s%s.%s'%(base_url, '0'*(5-len(ii)),ii,img_format)
+    filename = '%simage%s%s0.%s'%(base_url, '0'*(5-len(ii)),ii,img_format)
     print('Adding image: %s'%filename)
     ext_files.append(filename)
     
@@ -48,12 +62,13 @@ for i in range(n):
 timestamp = 1563907835.857213
 timestamps = np.arange(n) + timestamp
     
-image_series = ImageSeries(name='test_image_series', dimension=[2],
+image_series = ImageSeries(name='image_series',
                                external_file=ext_files,
                                starting_frame=[0], 
                                timestamps=timestamps,
-                               format=img_format, 
-                               description='Series of images from ...')
+                               format='external', 
+                               description='Series of %i images'%(len(ext_files)), 
+                               comments='%s'%(gen_info))
                                
 nwbfile.add_acquisition(image_series)
 
