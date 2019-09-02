@@ -1,0 +1,16 @@
+{
+"id": "20140727_L46_001",
+"lab": "Hausser Lab", 
+"contributors": ["Adam Packer", "Lloyd Russell"], 
+"location": "UCL", 
+"animal": "Mouse", 
+"animal-state": "Awake head-fixed", 
+"experiment": "Drifting grating visual stimuli", 
+"method": "Two-photon raster", 
+"indicator": "GCaMP6s", 
+"region": "V1",
+"depth-microns": 150, 
+"pixels-per-micron": 0.8,
+"rate-hz": 7.5, 
+"dimensions": [512, 512, 1825]
+}
