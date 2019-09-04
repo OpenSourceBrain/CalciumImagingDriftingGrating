@@ -30,8 +30,8 @@ nwbfile = pynwb.NWBFile('Calcium imaging data from Hausser lab', dataset, dateti
                   institution='University College London',
                   protocol='Awake head-fixed',
                   stimulus_notes='Drifting grating visual stimuli',
-                  related_publications='https://www.ncbi.nlm.nih.gov/pubmed/25532138',
-                  experiment_description=("Calcium imaging data from mouse V1 recording response in cells with GCaMP6s to drifting grating stimuli.\n"+\
+                  related_publications='Packer et al. 2015, Simultaneous all-optical manipulation and recording of neural circuit activity with cellular resolution in vivo, https://www.ncbi.nlm.nih.gov/pubmed/25532138',
+                  experiment_description=("Calcium imaging data from mouse V1, recording response in cells expressing GCaMP6s to drifting grating stimuli.\n"+\
 "This data was originally obtained from https://github.com/codeneuro/neurofinder, and has been redistributed here with permission of Michael Hausser."),
                   session_id='20140727_L46_001',
                   subject=sub)
@@ -67,7 +67,7 @@ image_series = ImageSeries(name='image_series',
                                starting_frame=[0], 
                                timestamps=timestamps,
                                format='external', 
-                               description='Series of %i images'%(len(ext_files)), 
+                               description='Series of %i images. Note: series downsampled and converted to JPEG for testing!'%(len(ext_files)), 
                                comments='%s'%(gen_info))
                                
 nwbfile.add_acquisition(image_series)
